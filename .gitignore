@@ -1,0 +1,8 @@
+# Editor / OS
+.DS_Store
+*.swp
+
+# Stray backups (should never be committed)
+*.bak
+*.bak-*
+*.orig

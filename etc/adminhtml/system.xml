@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="etechflow" translate="label" sortOrder="400">
+            <label>eTechFlow</label>
+        </tab>
+        <section id="etechflow_variantlinks" translate="label" type="text" sortOrder="900"
+                 showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Variant Links</label>
+            <tab>etechflow</tab>
+            <resource>Magento_Catalog::config_catalog</resource>
+            <group id="buttons" translate="label" type="text" sortOrder="10"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>"View Other" Button Labels</label>
+                <comment>Labels for the PDP "View Other" buttons. Configurable per store view. Blank fields fall back to the defaults.</comment>
+                <field id="enabled" translate="label comment" type="multiselect" sortOrder="5"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Buttons to show</label>
+                    <source_model>ETechFlow\VariantLinks\Model\Source\EnabledButtons</source_model>
+                    <comment>Tick which "View Other" buttons appear (storefront + admin product form). Add or remove a button here with no code change.</comment>
+                </field>
+                <field id="options_label" translate="label" type="text" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>"Options" button label</label>
+                </field>
+                <field id="finishes_label" translate="label" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>"Finishes" button label</label>
+                </field>
+                <field id="sizes_label" translate="label" type="text" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>"Sizes" button label</label>
+                </field>
+            </group>
+            <group id="dynamic" translate="label" type="text" sortOrder="20"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Auto-Generated Links (Dynamic)</label>
+                <comment><![CDATA[When ON, products WITHOUT a manually-set link get a "View Other" link generated automatically from their own category + Manufacturer / Finish / Size. Manual per-product links always take priority. Options = the brand's range in the category; Finishes = vary finish; Sizes = vary size (needs a size attribute mapped for the category).]]></comment>
+                <field id="enabled" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable auto-generated links</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="default_size_attribute" translate="label comment" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default "size" attribute code</label>
+                    <comment>Used for the Sizes button when a category has no specific mapping below. Leave blank to only show Sizes where mapped.</comment>
+                </field>
+                <field id="size_attribute_map" translate="label comment" type="textarea" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Per-category size attribute map</label>
+                    <comment><![CDATA[One per line: <strong>category-url-path=attribute_code</strong>. E.g. <em>euro-double-cylinders-locks=length</em>. Tells the Sizes button which attribute is "size" for that category.]]></comment>
+                </field>
+            </group>
+            <group id="custom_buttons" translate="label" type="text" sortOrder="30"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Custom Buttons (Advanced)</label>
+                <comment><![CDATA[Define your OWN "View Other …" buttons with no code. <strong>One per line:</strong> <code>Button Label|attributes_to_keep_the_same</code>.<br/>
+The button links to other products in the <strong>same category</strong> with those attributes held to this product's values, so everything else varies. Use <code>__size__</code> for the per-category size attribute (mapped above). A button is hidden on any product missing one of the held attributes.<br/>
+<strong>Examples:</strong><br/>
+<code>View Other Colours|manufacturer,finish,__size__</code> &nbsp;(same brand + finish + size → colour varies)<br/>
+<code>View Other Lengths|manufacturer,finish</code> &nbsp;(same brand + finish → length/size varies)<br/>
+Lines starting with # are ignored.]]></comment>
+                <field id="definitions" translate="label" type="textarea" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Button definitions</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

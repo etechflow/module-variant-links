@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="ETechFlow_VariantLinks::import"
+             title="Variant Links: Bulk Import"
+             translate="title"
+             module="ETechFlow_VariantLinks"
+             sortOrder="90"
+             parent="Magento_Catalog::catalog"
+             action="etechflow_variantlinks/import/index"
+             resource="Magento_Catalog::products"/>
+    </menu>
+</config>
