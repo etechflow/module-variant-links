@@ -8,6 +8,7 @@
                 <options_label>View Other Options</options_label>
                 <finishes_label>View Other Finishes</finishes_label>
                 <sizes_label>View Other Sizes</sizes_label>
+                <strip_legacy>1</strip_legacy>
             </buttons>
             <dynamic>
                 <enabled>0</enabled>

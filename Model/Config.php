@@ -23,6 +23,7 @@ class Config
         'variant_sizes'    => 'View Other Sizes',
     ];
     private const XML_ENABLED_BUTTONS  = 'etechflow_variantlinks/buttons/enabled';
+    private const XML_STRIP_LEGACY      = 'etechflow_variantlinks/buttons/strip_legacy';
     private const XML_DYNAMIC_ENABLED   = 'etechflow_variantlinks/dynamic/enabled';
     private const XML_DYNAMIC_SIZE_MAP  = 'etechflow_variantlinks/dynamic/size_attribute_map';
     private const XML_DYNAMIC_SIZE_DEF  = 'etechflow_variantlinks/dynamic/default_size_attribute';
@@ -55,6 +56,12 @@ class Config
     public function isDynamicEnabled($store = null): bool
     {
         return $this->scopeConfig->isSetFlag(self::XML_DYNAMIC_ENABLED, ScopeInterface::SCOPE_STORE, $store);
+    }
+
+    /** Whether to strip legacy hand-coded "View Other …" anchors from descriptions at render time. */
+    public function isLegacyStrippingEnabled($store = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(self::XML_STRIP_LEGACY, ScopeInterface::SCOPE_STORE, $store);
     }
 
     public function getSizeAttribute(string $catPath, $store = null): string

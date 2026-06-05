@@ -32,6 +32,12 @@
                        showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>"Sizes" button label</label>
                 </field>
+                <field id="strip_legacy" translate="label comment" type="select" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Strip old in-description buttons</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Removes the old hand-coded "View Other …" anchors (and button-styled links) from the product description as it renders, so they don't show twice. The stored description is left untouched — turn this off to show it exactly as written.</comment>
+                </field>
             </group>
             <group id="dynamic" translate="label" type="text" sortOrder="20"
                    showInDefault="1" showInWebsite="1" showInStore="1">
