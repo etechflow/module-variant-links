@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+  Renders the "View Other …" variant buttons on the product detail page. Targets
+  product.info.main — the standard container in both Luma and Hyvä themes — and
+  places the buttons just after the price. The block carries no logic of its own;
+  it binds the VariantLinks ViewModel, which reads the current product and yields
+  the (label, url) pairs.
+
+  Stores that want the buttons elsewhere can override this file in their own theme
+  and change the container / before / after.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="product.info.main">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="etechflow.variant.links"
+                   template="ETechFlow_VariantLinks::buttons.phtml"
+                   after="product.info.price"
+                   cacheable="true">
+                <arguments>
+                    <argument name="variant_links" xsi:type="object">ETechFlow\VariantLinks\ViewModel\VariantLinks</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

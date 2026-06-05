@@ -47,15 +47,26 @@ The `setup:upgrade` runs the data patch that creates the three attributes.
 | `buttons/options_label` | `View Other Options` | Label for the options button |
 | `buttons/finishes_label` | `View Other Finishes` | Label for the finishes button |
 | `buttons/sizes_label` | `View Other Sizes` | Label for the sizes button |
+| `buttons/strip_legacy` | `1` | Strip old in-description buttons at render time |
 | `dynamic/enabled` | `0` | Build links at render time instead of from stored URLs |
 | `dynamic/default_size_attribute` | — | Attribute used for dynamic size links |
 | `dynamic/size_attribute_map` | — | Per-category size-attribute overrides |
 
 ## Rendering
 
-The buttons are produced by `ViewModel\VariantLinks`. Wire it into the theme's
-`product-info` template (or equivalent) to output the buttons; `LegacyButtonStripper`
-cleans the old anchors out of the description in the same pass.
+Works out of the box — no theme edits required:
+
+- **Buttons** render via `view/frontend/layout/catalog_product_view.xml`, which injects
+  a block (bound to `ViewModel\VariantLinks`) into `product.info.main`, just after the
+  price. The container exists in both Luma and Hyvä. To move the buttons, override that
+  layout file in your own theme.
+- **Legacy stripping** runs through a plugin on `Magento\Catalog\Helper\Output` — both
+  Luma and Hyvä render `description` / `short_description` through it — so the old
+  hand-coded anchors are cleaned at render time on every theme. The stored description is
+  untouched (reversible); toggle with `buttons/strip_legacy`.
+
+> Note: `FilterUrlBuilder` is intentionally kept as a separate seam so a future SEO
+> layered-navigation module can share readable filter-URL generation.
 
 > Note: `FilterUrlBuilder` is intentionally kept as a separate seam so a future SEO
 > layered-navigation module can share readable filter-URL generation.

@@ -8,6 +8,7 @@ use ETechFlow\VariantLinks\Model\DynamicLinkBuilder;
 use ETechFlow\VariantLinks\Model\FilterUrlBuilder;
 use ETechFlow\VariantLinks\Model\LegacyButtonStripper;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class VariantLinks implements ArgumentInterface
@@ -23,8 +24,20 @@ class VariantLinks implements ArgumentInterface
         private readonly FilterUrlBuilder $urlBuilder,
         private readonly LegacyButtonStripper $stripper,
         private readonly Config $config,
-        private readonly DynamicLinkBuilder $dynamic
+        private readonly DynamicLinkBuilder $dynamic,
+        private readonly Registry $registry
     ) {
+    }
+
+    /**
+     * The product currently being viewed on the PDP, so the storefront template
+     * needs no Block of its own — Magento\Catalog registers `current_product` on
+     * every product page in both Luma and Hyvä. Returns null off a product page.
+     */
+    public function getCurrentProduct(): ?ProductInterface
+    {
+        $product = $this->registry->registry('current_product');
+        return $product instanceof ProductInterface ? $product : null;
     }
 
     /**

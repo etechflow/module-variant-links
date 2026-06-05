@@ -1,0 +1,55 @@
+<?php
+declare(strict_types=1);
+
+use ETechFlow\VariantLinks\ViewModel\VariantLinks;
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+/** @var VariantLinks $viewModel */
+$viewModel = $block->getData('variant_links');
+if (!$viewModel instanceof VariantLinks) {
+    return;
+}
+
+$product = $viewModel->getCurrentProduct();
+if ($product === null) {
+    return;
+}
+
+$buttons = $viewModel->getButtons($product);
+if (empty($buttons)) {
+    return;
+}
+?>
+<style>
+    .evl-variant-links{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0;font-family:inherit}
+    .evl-variant-links a.evl-btn{
+        display:inline-flex;align-items:center;gap:.5rem;
+        padding:.6rem 1.1rem;border-radius:.4rem;
+        border:1px solid currentColor;
+        font-size:14px;font-weight:600;line-height:1.2;text-decoration:none;
+        color:#1f2937;background:transparent;
+        transition:background .15s ease,color .15s ease;
+    }
+    .evl-variant-links a.evl-btn:hover{background:#1f2937;color:#fff}
+    .evl-variant-links a.evl-btn svg{flex:0 0 16px;width:16px;height:16px}
+</style>
+
+<div class="evl-variant-links" role="group"
+     aria-label="<?= $escaper->escapeHtmlAttr(__('Other versions of this product')) ?>">
+<?php foreach ($buttons as $button):
+    $label = (string)($button['label'] ?? '');
+    $url   = (string)($button['url'] ?? '');
+    if ($label === '' || $url === '') {
+        continue;
+    }
+?>
+    <a class="evl-btn" href="<?= $escaper->escapeUrl($url) ?>">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+        </svg>
+        <span><?= $escaper->escapeHtml($label) ?></span>
+    </a>
+<?php endforeach; ?>
+</div>
