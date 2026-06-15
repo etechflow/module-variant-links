@@ -9,6 +9,10 @@ use Magento\Store\Model\ScopeInterface;
 /**
  * Per-store config for the "View Other" buttons: which show, their labels, the
  * dynamic (auto-generated) link settings, and admin-defined custom buttons.
+ *
+ * isLicensed() is the master licence gate — the storefront ViewModel + the
+ * legacy-strip plugin both check it, so a valid licence is ALWAYS required for
+ * the module to do anything on the storefront.
  */
 class Config
 {
@@ -23,6 +27,7 @@ class Config
         'variant_sizes'    => 'View Other Sizes',
     ];
     private const XML_ENABLED_BUTTONS  = 'etechflow_variantlinks/buttons/enabled';
+    private const XML_STRIP_LEGACY      = 'etechflow_variantlinks/buttons/strip_legacy';
     private const XML_DYNAMIC_ENABLED   = 'etechflow_variantlinks/dynamic/enabled';
     private const XML_DYNAMIC_SIZE_MAP  = 'etechflow_variantlinks/dynamic/size_attribute_map';
     private const XML_DYNAMIC_SIZE_DEF  = 'etechflow_variantlinks/dynamic/default_size_attribute';
@@ -31,8 +36,19 @@ class Config
     /** @var array<string,string>|null */
     private ?array $sizeMap = null;
 
-    public function __construct(private readonly ScopeConfigInterface $scopeConfig)
+    public function __construct(
+        private readonly ScopeConfigInterface $scopeConfig,
+        private readonly LicenseValidator $licenseValidator
+    ) {
+    }
+
+    /**
+     * Master licence gate. A valid licence is ALWAYS required — no environment
+     * toggle, no host bypass. The storefront features are inert without it.
+     */
+    public function isLicensed(): bool
     {
+        return $this->licenseValidator->isValid();
     }
 
     public function getLabel(string $key, $store = null): string
@@ -55,6 +71,12 @@ class Config
     public function isDynamicEnabled($store = null): bool
     {
         return $this->scopeConfig->isSetFlag(self::XML_DYNAMIC_ENABLED, ScopeInterface::SCOPE_STORE, $store);
+    }
+
+    /** Whether to strip legacy hand-coded "View Other …" anchors from descriptions at render time. */
+    public function isLegacyStrippingEnabled($store = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(self::XML_STRIP_LEGACY, ScopeInterface::SCOPE_STORE, $store);
     }
 
     public function getSizeAttribute(string $catPath, $store = null): string

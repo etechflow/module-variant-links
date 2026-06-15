@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ETechFlow\VariantLinks\Console\Command;
 
+use ETechFlow\VariantLinks\Model\LicenseValidator;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\State;
 use Symfony\Component\Console\Command\Command;
@@ -27,6 +28,7 @@ class MigrateLegacyButtons extends Command
     public function __construct(
         private readonly ResourceConnection $resource,
         private readonly State $state,
+        private readonly LicenseValidator $licenseValidator,
         ?string $name = null
     ) {
         parent::__construct($name);
@@ -42,6 +44,10 @@ class MigrateLegacyButtons extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->licenseValidator->isValid()) {
+            $output->writeln('<error>Variant Links is not licensed for this host. Enter a valid licence key in Stores > Config > eTechFlow > Variant Links.</error>');
+            return Command::FAILURE;
+        }
         try { $this->state->setAreaCode('adminhtml'); } catch (\Throwable $e) {}
         $dryRun = (bool) $input->getOption('dry-run');
         $limit  = $input->getOption('limit') !== null ? (int) $input->getOption('limit') : 0;

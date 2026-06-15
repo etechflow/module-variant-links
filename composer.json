@@ -3,7 +3,7 @@
     "description": "Dynamic 'View Other Options/Finishes/Sizes' PDP buttons driven by per-product link attributes; replaces hardcoded in-description buttons and strips the old ones at render time.",
     "type": "magento2-module",
     "license": "proprietary",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "require": {
         "php": ">=8.1",
         "magento/framework": "*",

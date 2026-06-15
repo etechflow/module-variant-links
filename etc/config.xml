@@ -3,11 +3,19 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <etechflow_variantlinks>
+            <license>
+                <license_key></license_key>
+                <issued_key></issued_key>
+                <issued_at>0</issued_at>
+                <ip_blocked>0</ip_blocked>
+                <portal_url>https://license-service.etechflow.com/license/validate</portal_url>
+            </license>
             <buttons>
                 <enabled>variant_finishes,variant_sizes</enabled>
                 <options_label>View Other Options</options_label>
                 <finishes_label>View Other Finishes</finishes_label>
                 <sizes_label>View Other Sizes</sizes_label>
+                <strip_legacy>1</strip_legacy>
             </buttons>
             <dynamic>
                 <enabled>0</enabled>

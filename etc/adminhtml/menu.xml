@@ -2,13 +2,30 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="ETechFlow_VariantLinks::import"
-             title="Variant Links: Bulk Import"
+        <!-- Own group heading in the Catalog menu (like "AI SEO"), so admins
+             can see which pages belong to the Variant Links module. -->
+        <add id="ETechFlow_VariantLinks::root"
+             title="Variant Links"
              translate="title"
              module="ETechFlow_VariantLinks"
              sortOrder="90"
              parent="Magento_Catalog::catalog"
+             resource="Magento_Catalog::products"/>
+        <add id="ETechFlow_VariantLinks::import"
+             title="Bulk Import"
+             translate="title"
+             module="ETechFlow_VariantLinks"
+             sortOrder="10"
+             parent="ETechFlow_VariantLinks::root"
              action="etechflow_variantlinks/import/index"
              resource="Magento_Catalog::products"/>
+        <add id="ETechFlow_VariantLinks::config"
+             title="Configuration"
+             translate="title"
+             module="ETechFlow_VariantLinks"
+             sortOrder="20"
+             parent="ETechFlow_VariantLinks::root"
+             action="adminhtml/system_config/edit/section/etechflow_variantlinks"
+             resource="Magento_Catalog::config_catalog"/>
     </menu>
 </config>

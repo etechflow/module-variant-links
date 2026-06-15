@@ -10,6 +10,55 @@
             <label>Variant Links</label>
             <tab>etechflow</tab>
             <resource>Magento_Catalog::config_catalog</resource>
+
+            <group id="module_status" translate="label" type="text" sortOrder="0"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Module Status</label>
+                <frontend_model>ETechFlow\VariantLinks\Block\Adminhtml\System\Config\ModuleStatus</frontend_model>
+            </group>
+
+            <group id="license" translate="label" type="text" sortOrder="1"
+                   showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>License</label>
+                <field id="license_key" translate="label comment" type="text" sortOrder="10"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>License Key</label>
+                    <comment><![CDATA[
+                        Paste the SP-XXXX key from your purchase email, or a per-module HMAC key, or a
+                        shared eTechFlow bundle key. Bound to the domain you provided at checkout.<br/>
+                        A valid licence is always required. <code>www.</code> prefix is normalised.
+                    ]]></comment>
+                </field>
+                <field id="bundle_license_key" translate="label comment" type="obscure" sortOrder="15"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Bundle License Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <config_path>etechflow_bundle/license/license_key</config_path>
+                    <comment><![CDATA[
+                        Shared key across ALL eTechFlow modules. If you purchased the eTechFlow Bundle,
+                        paste it here once and every installed eTechFlow module activates.<br/>Stored encrypted.
+                    ]]></comment>
+                </field>
+                <field id="portal_url" translate="label comment" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>License Portal URL</label>
+                    <comment><![CDATA[
+                        The eTechFlow portal endpoint that validates SP-XXXX subscription keys.
+                        Default: <code>https://license-service.etechflow.com/license/validate</code>.
+                        Change only if eTechFlow notifies you of a new portal URL.
+                    ]]></comment>
+                </field>
+                <field id="issued_key" translate="label" type="obscure" sortOrder="30"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Last Issued Key (auto-managed)</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment><![CDATA[
+                        Read-only audit field. Auto-populated when the portal accepts a key for the first time.
+                        Used by the module to auto-restore the licence after a portal IP-block lift. Do not edit.
+                    ]]></comment>
+                </field>
+            </group>
+
             <group id="buttons" translate="label" type="text" sortOrder="10"
                    showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>"View Other" Button Labels</label>
@@ -31,6 +80,12 @@
                 <field id="sizes_label" translate="label" type="text" sortOrder="30"
                        showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>"Sizes" button label</label>
+                </field>
+                <field id="strip_legacy" translate="label comment" type="select" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Strip old in-description buttons</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Removes the old hand-coded "View Other …" anchors (and button-styled links) from the product description as it renders, so they don't show twice. The stored description is left untouched — turn this off to show it exactly as written.</comment>
                 </field>
             </group>
             <group id="dynamic" translate="label" type="text" sortOrder="20"

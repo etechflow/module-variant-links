@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ETechFlow\VariantLinks\Console\Command;
 
 use ETechFlow\VariantLinks\Model\BulkImporter;
+use ETechFlow\VariantLinks\Model\LicenseValidator;
 use Magento\Framework\App\State;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,6 +21,7 @@ class ImportVariantLinks extends Command
     public function __construct(
         private readonly State $state,
         private readonly BulkImporter $importer,
+        private readonly LicenseValidator $licenseValidator,
         ?string $name = null
     ) {
         parent::__construct($name);
@@ -35,6 +37,10 @@ class ImportVariantLinks extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->licenseValidator->isValid()) {
+            $output->writeln('<error>Variant Links is not licensed for this host. Enter a valid licence key in Stores > Config > eTechFlow > Variant Links.</error>');
+            return Command::FAILURE;
+        }
         try { $this->state->setAreaCode('adminhtml'); } catch (\Throwable $e) {}
         $file = (string) $input->getArgument('file');
         if (!is_file($file) || !is_readable($file)) {
