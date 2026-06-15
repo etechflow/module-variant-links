@@ -45,7 +45,25 @@ class VariantLinksBuilder extends AbstractModifier
 
     public function modifyData(array $data): array
     {
-        return $data; // all presets are set via meta `value` in modifyMeta
+        $product = $this->locator->getProduct();
+        $id = (int) $product->getId();
+        if (!$id) {
+            return $data;
+        }
+        if (!isset($data[$id]['product'])) {
+            $data[$id]['product'] = [];
+        }
+        foreach (self::BUTTONS as $attr => $labelKey) {
+            $key = $this->key($attr);
+            [$cat, $rows] = $this->parse((string) $product->getData($attr));
+            $data[$id]['product'][$key . '_category'] = $cat;
+            for ($i = 0; $i < self::ROWS; $i++) {
+                $row = $rows[$i] ?? null;
+                $data[$id]['product'][$key . '_f' . $i . '_attr'] = (string) ($row['attribute'] ?? '');
+                $data[$id]['product'][$key . '_f' . $i . '_val']  = (string) ($row['value'] ?? '');
+            }
+        }
+        return $data;
     }
 
     public function modifyMeta(array $meta): array
@@ -68,6 +86,7 @@ class VariantLinksBuilder extends AbstractModifier
                     'collapsible'   => true,
                     'opened'        => false,
                     'sortOrder'     => 900,
+                    'dataScope'     => 'data.product',
                 ]]],
                 'children' => $children,
             ];
@@ -130,7 +149,7 @@ class VariantLinksBuilder extends AbstractModifier
                 'formElement'   => Select::NAME,
                 'dataType'      => Text::NAME,
                 'label'         => __('Target category'),
-                'dataScope'     => 'product.' . $key . '_category',
+                'dataScope'     => $key . '_category',
                 'options'       => $this->categories->toOptionArray(),
                 'value'         => $cat,
                 'sortOrder'     => 10,
@@ -173,7 +192,7 @@ class VariantLinksBuilder extends AbstractModifier
                     'formElement'   => Select::NAME,
                     'dataType'      => Text::NAME,
                     'label'         => __('Attribute'),
-                    'dataScope'     => 'product.' . $key . '_f' . $i . '_attr',
+                    'dataScope'     => $key . '_f' . $i . '_attr',
                     'options'       => $this->attributes->toOptionArray(),
                     'value'         => $attrVal,
                     'caption'       => __('— attribute —'),
@@ -185,7 +204,7 @@ class VariantLinksBuilder extends AbstractModifier
                     'component'     => 'ETechFlow_VariantLinks/js/form/element/variant-value-select',
                     'dataType'      => Text::NAME,
                     'label'         => __('Value'),
-                    'dataScope'     => 'product.' . $key . '_f' . $i . '_val',
+                    'dataScope'     => $key . '_f' . $i . '_val',
                     'options'       => $attrVal !== '' ? $this->loadValues($attrVal) : [],
                     'value'         => $valVal,
                     'optionsUrl'    => $this->backendUrl->getUrl('etechflow_variantlinks/attribute/options'),

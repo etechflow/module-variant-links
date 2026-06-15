@@ -65,7 +65,7 @@ class Config
     {
         $raw = (string) $this->scopeConfig->getValue(self::XML_ENABLED_BUTTONS, ScopeInterface::SCOPE_STORE, $store);
         $keys = array_values(array_filter(array_map('trim', explode(',', $raw))));
-        return $keys ?: ['variant_finishes', 'variant_sizes'];
+        return $keys;
     }
 
     public function isDynamicEnabled($store = null): bool

@@ -67,6 +67,7 @@
                        showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Buttons to show</label>
                     <source_model>ETechFlow\VariantLinks\Model\Source\EnabledButtons</source_model>
+                    <can_be_empty>1</can_be_empty>
                     <comment>Tick which "View Other" buttons appear (storefront + admin product form). Add or remove a button here with no code change.</comment>
                 </field>
                 <field id="options_label" translate="label" type="text" sortOrder="10"
