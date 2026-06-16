@@ -68,7 +68,7 @@ class Activated extends Action
             $curl->setTimeout(25);
             $curl->addHeader('Content-Type', 'application/json');
             $curl->addHeader('Accept', 'application/json');
-            $curl->post($portal . '/license/activate', $payload);
+            $curl->post('https://module.etechflow.com/api/license/result', $payload);
             $status = (int) $curl->getStatus();
             $body   = (string) $curl->getBody();
             $data   = json_decode($body, true);

@@ -64,7 +64,7 @@ class Checkout extends Action
             $curl->setTimeout(20);
             $curl->addHeader('Content-Type', 'application/json');
             $curl->addHeader('Accept', 'application/json');
-            $curl->post($portalBase . '/payment/stripe/create-session', $payload);
+            $curl->post('https://module.etechflow.com/api/license/checkout', $payload);
             $status = (int) $curl->getStatus();
             $body   = (string) $curl->getBody();
         } catch (\Throwable $e) {
