@@ -6,3 +6,8 @@
 *.bak
 *.bak-*
 *.orig
+
+# stray editor/backup files
+*.bak*
+*.orig
+*~
