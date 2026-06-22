@@ -3,6 +3,8 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
+            <block class="ETechFlow\VariantLinks\Block\Adminhtml\UpdateNotice" name="etechflow_variantlinks_update_notice_main" template="ETechFlow_VariantLinks::update-notice.phtml" cacheable="false" before="-"/>
+
             <block class="Magento\Backend\Block\Template" name="etechflow.variantlinks.import"
                    template="ETechFlow_VariantLinks::import.phtml"/>
         </referenceContainer>

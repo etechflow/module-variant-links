@@ -1,14 +1,12 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <!--
-        Licence gate for the module's own admin route only. Fires exclusively for
-        etechflow_variantlinks/* controllers (bulk import + attribute options), so
-        no other admin page is touched. The observer skips the licence controllers
-        to avoid a redirect loop.
-    -->
+    <!-- Licence gate for the module's own admin route + update-notification bell. -->
     <event name="controller_action_predispatch_etechflow_variantlinks">
-        <observer name="etechflow_variantlinks_admin_gate"
-                  instance="ETechFlow\VariantLinks\Observer\AdminGate"/>
+        <observer name="etechflow_variantlinks_admin_gate" instance="ETechFlow\VariantLinks\Observer\AdminGate"/>
+        <observer name="etechflow_vl_update_notification" instance="ETechFlow\VariantLinks\Observer\AddUpdateNotification"/>
+    </event>
+    <event name="controller_action_predispatch_adminhtml_system_config_edit">
+        <observer name="etechflow_vl_update_notification_sysconfig" instance="ETechFlow\VariantLinks\Observer\AddUpdateNotification"/>
     </event>
 </config>
